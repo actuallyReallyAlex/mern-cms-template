@@ -6,6 +6,7 @@ import path from "path";
 
 import { Controller } from "./types";
 import mongoose from "mongoose";
+import Beer from "./models/Beer";
 
 class App {
   public app: express.Application;
@@ -18,6 +19,23 @@ class App {
 
     this.initializeMiddlewares();
     this.initializeControllers(controllers);
+    // this.setUpDatabase(); // TODO - Remove this
+  }
+
+  private async setUpDatabase(): Promise<void> {
+    const beers = [
+      { name: "IPA " },
+      { name: "Light Beer" },
+      { name: "Amber Ale" },
+    ];
+    const beerPromises = [];
+
+    beers.forEach((beer) => {
+      const newBeer = new Beer({ name: beer.name });
+      beerPromises.push(newBeer.save());
+    });
+
+    await Promise.all(beerPromises);
   }
 
   private initializeMiddlewares(): void {
@@ -27,7 +45,7 @@ class App {
       useFindAndModify: false,
       useUnifiedTopology: true,
     });
-    
+
     this.app.use(express.json());
     this.app.use(morgan("dev"));
     const whitelistDomains = [
