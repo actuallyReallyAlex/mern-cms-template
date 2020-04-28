@@ -1,5 +1,5 @@
-import express, { Router } from "express";
-import Beer from "../models/Beer";
+import express, { Router } from 'express';
+import Beer from '../models/Beer';
 
 class BeerController {
   public router: Router = express.Router();
@@ -10,17 +10,18 @@ class BeerController {
 
   public initializeRoutes(): void {
     this.router.get(
-      "/beers",
+      '/beers',
       async (req: express.Request, res: express.Response) => {
         try {
           const beers = await Beer.find();
 
           res.send(beers);
         } catch (e) {
+          // eslint-disable-next-line no-console
           console.error(e);
           res.status(500).send();
         }
-      }
+      },
     );
   }
 }

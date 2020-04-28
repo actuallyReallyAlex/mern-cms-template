@@ -1,13 +1,13 @@
-import chalk from "chalk";
-import cors from "cors";
-import express, { Request, Response } from "express";
-import morgan from "morgan";
-import path from "path";
+import chalk from 'chalk';
+import cors from 'cors';
+import express, { Request, Response } from 'express';
+import mongoose from 'mongoose';
+import morgan from 'morgan';
+import path from 'path';
 
-import { Controller } from "./types";
-import mongoose from "mongoose";
-import Beer from "./models/Beer";
-import User from "./models/User";
+import { Controller } from './types';
+// import Beer from './models/Beer';
+// import User from './models/User';
 
 class App {
   public app: express.Application;
@@ -23,27 +23,25 @@ class App {
     // this.setUpDatabase(); // TODO - Remove this
   }
 
-  private async setUpDatabase(): Promise<void> {
-    // const newUser = new User({
-    //   email: "email@email.com",
-    //   name: "TEST",
-    //   password: "Red123",
-    // });
-    // await newUser.save();
-    // const beers = [
-    //   { name: "IPA " },
-    //   { name: "Light Beer" },
-    //   { name: "Amber Ale" },
-    // ];
-    // const beerPromises = [];
-
-    // beers.forEach((beer) => {
-    //   const newBeer = new Beer({ name: beer.name });
-    //   beerPromises.push(newBeer.save());
-    // });
-
-    // await Promise.all(beerPromises);
-  }
+  // private async setUpDatabase(): Promise<void> {
+  //   // const newUser = new User({
+  //   //   email: "email@email.com",
+  //   //   name: "TEST",
+  //   //   password: "Red123",
+  //   // });
+  //   // await newUser.save();
+  //   // const beers = [
+  //   //   { name: "IPA " },
+  //   //   { name: "Light Beer" },
+  //   //   { name: "Amber Ale" },
+  //   // ];
+  //   // const beerPromises = [];
+  //   // beers.forEach((beer) => {
+  //   //   const newBeer = new Beer({ name: beer.name });
+  //   //   beerPromises.push(newBeer.save());
+  //   // });
+  //   // await Promise.all(beerPromises);
+  // }
 
   private initializeMiddlewares(): void {
     mongoose.connect(process.env.MONGODB_URL, {
@@ -54,10 +52,10 @@ class App {
     });
 
     this.app.use(express.json());
-    this.app.use(morgan("dev"));
+    this.app.use(morgan('dev'));
     const whitelistDomains = [
-      "http://localhost:3000",
-      "http://localhost:8080",
+      'http://localhost:3000',
+      'http://localhost:8080',
       undefined,
     ];
 
@@ -66,8 +64,9 @@ class App {
         if (whitelistDomains.indexOf(origin) !== -1) {
           cb(null, true);
         } else {
+          // eslint-disable-next-line no-console
           console.error(`Sever refused to allow: ${origin}`);
-          cb(new Error("Not allowed by CORS"));
+          cb(new Error('Not allowed by CORS'));
         }
       },
     };
@@ -77,21 +76,23 @@ class App {
 
   private initializeControllers(controllers: Controller[]): void {
     controllers.forEach((controller) => {
-      this.app.use("/", controller.router);
+      this.app.use('/', controller.router);
     });
 
-    this.app.use(express.static(path.join(__dirname, "../dist")));
+    this.app.use(express.static(path.join(__dirname, '../dist')));
 
-    this.app.get("*", (req: Request, res: Response) => {
-      res.sendFile(path.join(__dirname, "../dist/index.html"));
+    this.app.get('*', (req: Request, res: Response) => {
+      res.sendFile(path.join(__dirname, '../dist/index.html'));
     });
   }
 
   public listen(): void {
     this.app.listen(this.port, () => {
+      // eslint-disable-next-line no-console
       console.log(`Mode: ${chalk.yellowBright(process.env.NODE_ENV)}\n`);
+      // eslint-disable-next-line no-console
       console.log(
-        `Server is listening on port: ${chalk.yellowBright(this.port)}\n`
+        `Server is listening on port: ${chalk.yellowBright(this.port)}\n`,
       );
     });
   }

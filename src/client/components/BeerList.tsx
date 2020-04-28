@@ -1,17 +1,19 @@
-import * as React from "react";
+import * as React from 'react';
 
-export interface BeerListProps {
-  beers: any[];
+export interface Beer {
+  name: string;
 }
 
-const BeerList: React.SFC<BeerListProps> = ({ beers }) => {
-  return (
-    <ul id="beers-list">
-      {beers.map((beer) => (
-        <li key={beer.name}>{beer.name}</li>
-      ))}
-    </ul>
-  );
-};
+export interface BeerListProps {
+  beers: Beer[];
+}
+
+const BeerList: React.SFC<BeerListProps> = ({ beers }) => (
+  <ul id="beers-list">
+    {beers.map((beer) => (
+      <li key={beer.name}>{beer.name}</li>
+    ))}
+  </ul>
+);
 
 export default BeerList;

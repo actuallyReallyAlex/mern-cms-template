@@ -1,14 +1,14 @@
-import mongoose, { Document, Model } from "mongoose";
-import validator from "validator";
-import bcrypt from "bcrypt";
+import mongoose, { Document, Model } from 'mongoose';
+import validator from 'validator';
+import bcrypt from 'bcrypt';
 
 interface ValidateFn<T> {
   (value: T): boolean;
 }
 
-const emailValidation: ValidateFn<any> = (value: string): boolean => {
+const emailValidation: ValidateFn<string> = (value: string): boolean => {
   if (!validator.isEmail(value)) {
-    throw new Error("Email is invalid.");
+    throw new Error('Email is invalid.');
   }
   return true;
 };
@@ -34,18 +34,19 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 function applicationToJSON(): void {
-  const user = this;
-  const userObject = user.toObject();
+  const userObject = this.toObject();
 
   delete userObject.password;
   return userObject;
 }
 
 userSchema.methods.toJSON = applicationToJSON;
+
+const User = mongoose.model<UserDocument, UserModel>('User', userSchema);
 
 export interface UserDocument extends Document {
   email: string;
@@ -59,33 +60,31 @@ export interface UserModel extends Model<UserDocument> {
 
 userSchema.statics.findByCredentials = async (
   email: string,
-  password: string
-) => {
+  password: string,
+): Promise<UserDocument> => {
   const user: UserDocument = await User.findOne({ email });
 
   if (!user) {
-    throw new Error("Unable to log in.");
+    throw new Error('Unable to log in.');
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (!isMatch) {
-    throw new Error("Unable to log in.");
+    throw new Error('Unable to log in.');
   }
 
   return user;
 };
 
-userSchema.pre<UserDocument>("save", async function (next) {
-  const user = this;
-
-  if (user.isModified("password")) {
-    user.password = await bcrypt.hash(user.password, 8);
+async function hashPass(next: Function): Promise<void> {
+  if (this.isModified('password')) {
+    this.password = await bcrypt.hash(this.password, 8);
   }
 
   next();
-});
+}
 
-const User = mongoose.model<UserDocument, UserModel>("User", userSchema);
+userSchema.pre<UserDocument>('save', hashPass);
 
 export default User;

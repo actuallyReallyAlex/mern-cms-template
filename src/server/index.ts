@@ -1,10 +1,10 @@
-import App from "./app";
-import BeerController from "./controllers/beer";
-import UserController from "./controllers/user";
+import App from './app';
+import BeerController from './controllers/beer';
+import UserController from './controllers/user';
 
 const app = new App(
   [new BeerController(), new UserController()],
-  process.env.PORT
+  process.env.PORT,
 );
 
 app.listen();
