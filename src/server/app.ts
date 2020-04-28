@@ -7,6 +7,7 @@ import path from "path";
 import { Controller } from "./types";
 import mongoose from "mongoose";
 import Beer from "./models/Beer";
+import User from "./models/User";
 
 class App {
   public app: express.Application;
@@ -23,19 +24,25 @@ class App {
   }
 
   private async setUpDatabase(): Promise<void> {
-    const beers = [
-      { name: "IPA " },
-      { name: "Light Beer" },
-      { name: "Amber Ale" },
-    ];
-    const beerPromises = [];
+    // const newUser = new User({
+    //   email: "email@email.com",
+    //   name: "TEST",
+    //   password: "Red123",
+    // });
+    // await newUser.save();
+    // const beers = [
+    //   { name: "IPA " },
+    //   { name: "Light Beer" },
+    //   { name: "Amber Ale" },
+    // ];
+    // const beerPromises = [];
 
-    beers.forEach((beer) => {
-      const newBeer = new Beer({ name: beer.name });
-      beerPromises.push(newBeer.save());
-    });
+    // beers.forEach((beer) => {
+    //   const newBeer = new Beer({ name: beer.name });
+    //   beerPromises.push(newBeer.save());
+    // });
 
-    await Promise.all(beerPromises);
+    // await Promise.all(beerPromises);
   }
 
   private initializeMiddlewares(): void {
