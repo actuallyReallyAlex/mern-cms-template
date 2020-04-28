@@ -5,6 +5,7 @@ import morgan from "morgan";
 import path from "path";
 
 import { Controller } from "./types";
+import mongoose from "mongoose";
 
 class App {
   public app: express.Application;
@@ -20,6 +21,13 @@ class App {
   }
 
   private initializeMiddlewares(): void {
+    mongoose.connect(process.env.MONGODB_URL, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
+      useUnifiedTopology: true,
+    });
+    
     this.app.use(express.json());
     this.app.use(morgan("dev"));
     const whitelistDomains = [
