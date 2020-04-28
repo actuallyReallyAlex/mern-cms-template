@@ -9,9 +9,9 @@
     "build-server": "rimraf build && tsc",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
-    "dev": "webpack-dev-server",
+    "dev": "env-cmd -e development npm start",
     "start": "node build/index.js",
-    "start:dev": "env-cmd -e development npm start",
+    "start:dev": "start-server-and-test dev http://localhost:3000 webpack-dev-server",
     "test": "start-server-and-test test-server http://localhost:3000 cy:run",
     "test-server": "env-cmd -e test npm start"
   },

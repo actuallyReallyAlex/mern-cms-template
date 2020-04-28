@@ -6,6 +6,6 @@ context("Main", () => {
   });
 
   it("Should display Application", () => {
-    cy.get("body").should("contain.text", "APP");
+    cy.get("body").should("contain.text", "MERN CMS Template");
   });
 });
