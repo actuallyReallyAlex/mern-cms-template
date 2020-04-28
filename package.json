@@ -4,7 +4,8 @@
   "description": "A minimal CMS template using the MERN stack.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rimraf build && tsc",
+    "start": "node build/index.js"
   },
   "repository": {
     "type": "git",
@@ -20,5 +21,9 @@
   "bugs": {
     "url": "https://github.com/alexlee-dev/mern-cms-template/issues"
   },
-  "homepage": "https://github.com/alexlee-dev/mern-cms-template#readme"
+  "homepage": "https://github.com/alexlee-dev/mern-cms-template#readme",
+  "devDependencies": {
+    "rimraf": "^3.0.2",
+    "typescript": "^3.8.3"
+  }
 }
