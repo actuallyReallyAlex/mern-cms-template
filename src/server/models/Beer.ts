@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const beerSchema = new mongoose.Schema(
   {
@@ -7,7 +7,7 @@ const beerSchema = new mongoose.Schema(
       type: String,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 function applicationToJSON(): void {
@@ -16,6 +16,6 @@ function applicationToJSON(): void {
 
 beerSchema.methods.toJSON = applicationToJSON;
 
-const Beer = mongoose.model("Beer", beerSchema);
+const Beer = mongoose.model('Beer', beerSchema);
 
 export default Beer;

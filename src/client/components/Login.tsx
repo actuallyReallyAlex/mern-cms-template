@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 export interface LoginProps {
   setIsAuthenticated: Function;
@@ -6,17 +6,19 @@ export interface LoginProps {
 }
 
 const Login: React.SFC<LoginProps> = ({ setIsAuthenticated, setUser }) => {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
     e.preventDefault();
-    const response: Response = await fetch("http://localhost:3000/user/login", {
+    const response: Response = await fetch('http://localhost:3000/user/login', {
       body: JSON.stringify({ email, password }),
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
-      method: "POST",
+      method: 'POST',
     });
 
     if (response.status === 200) {
@@ -24,7 +26,8 @@ const Login: React.SFC<LoginProps> = ({ setIsAuthenticated, setUser }) => {
       setUser(res);
       setIsAuthenticated(true);
     } else {
-      alert("NOT VALID LOGIN");
+      // eslint-disable-next-line no-alert
+      alert('NOT VALID LOGIN');
     }
   };
 
@@ -33,13 +36,13 @@ const Login: React.SFC<LoginProps> = ({ setIsAuthenticated, setUser }) => {
       <label htmlFor="email">Email</label>
       <input
         id="email"
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={(e): void => setEmail(e.target.value)}
         type="text"
       />
       <label htmlFor="password">Password</label>
       <input
         id="password"
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={(e): void => setPassword(e.target.value)}
         type="password"
       />
       <button id="submit-login" type="submit">

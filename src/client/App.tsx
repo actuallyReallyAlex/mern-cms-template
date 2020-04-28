@@ -1,16 +1,14 @@
-import * as React from "react";
-import BeerList from "./components/BeerList";
-import Login from "./components/Login";
+import * as React from 'react';
+import BeerList from './components/BeerList';
+import Login from './components/Login';
 
-export interface AppProps {}
-
-const App: React.SFC<AppProps> = () => {
+const App: React.SFC<{}> = () => {
   const [beers, setBeers] = React.useState([]);
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
   const [user, setUser] = React.useState(null);
 
-  const handleGetBeers = async () => {
-    const response = await fetch("http://localhost:3000/beers");
+  const handleGetBeers = async (): Promise<void> => {
+    const response = await fetch('http://localhost:3000/beers');
     const res = await response.json();
     setBeers(res);
   };
