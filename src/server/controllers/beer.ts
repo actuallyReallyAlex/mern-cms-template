@@ -44,6 +44,31 @@ class BeerController {
           }
         },
       ),
+
+      this.router.patch(
+        '/beer/:id',
+        // eslint-disable-next-line consistent-return
+        async (req: express.Request, res: express.Response) => {
+          try {
+            const beer = await Beer.findById(req.params.id);
+
+            if (!beer) {
+              return res.status(404).send();
+            }
+
+            const updates = Object.keys(req.body);
+            updates.forEach((update) => (beer[update] = req.body[update]));
+
+            await beer.save();
+
+            res.send(beer);
+          } catch (e) {
+            // eslint-disable-next-line no-console
+            console.error(e);
+            res.status(500).send();
+          }
+        },
+      ),
     );
   }
 }
