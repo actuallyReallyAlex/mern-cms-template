@@ -2,6 +2,18 @@ import mongoose from 'mongoose';
 
 const beerSchema = new mongoose.Schema(
   {
+    abv: {
+      required: true,
+      type: Number,
+    },
+    brewer: {
+      required: true,
+      type: String,
+    },
+    description: {
+      required: true,
+      type: String,
+    },
     name: {
       required: true,
       type: String,
