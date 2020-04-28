@@ -1,11 +1,16 @@
 import * as React from 'react';
 
 export interface LoginProps {
+  setBeers: Function;
   setIsAuthenticated: Function;
   setUser: Function;
 }
 
-const Login: React.SFC<LoginProps> = ({ setIsAuthenticated, setUser }) => {
+const Login: React.SFC<LoginProps> = ({
+  setBeers,
+  setIsAuthenticated,
+  setUser,
+}) => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
@@ -23,8 +28,11 @@ const Login: React.SFC<LoginProps> = ({ setIsAuthenticated, setUser }) => {
 
     if (response.status === 200) {
       const res = await response.json();
+      const beerResponse = await fetch('http://localhost:3000/beers');
+      const beerRes = await beerResponse.json();
       setUser(res);
       setIsAuthenticated(true);
+      setBeers(beerRes);
     } else {
       // eslint-disable-next-line no-alert
       alert('NOT VALID LOGIN');
