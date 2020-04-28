@@ -46,8 +46,6 @@ function applicationToJSON(): void {
 
 userSchema.methods.toJSON = applicationToJSON;
 
-const User = mongoose.model<UserDocument, UserModel>('User', userSchema);
-
 export interface UserDocument extends Document {
   email: string;
   name: string;
@@ -58,10 +56,21 @@ export interface UserModel extends Model<UserDocument> {
   findByCredentials(email: string, password: string): Promise<UserDocument>;
 }
 
+async function hashPass(next: Function): Promise<void> {
+  if (this.isModified('password')) {
+    this.password = await bcrypt.hash(this.password, 8);
+  }
+
+  next();
+}
+
+userSchema.pre<UserDocument>('save', hashPass);
+
 userSchema.statics.findByCredentials = async (
   email: string,
   password: string,
 ): Promise<UserDocument> => {
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
   const user: UserDocument = await User.findOne({ email });
 
   if (!user) {
@@ -77,14 +86,6 @@ userSchema.statics.findByCredentials = async (
   return user;
 };
 
-async function hashPass(next: Function): Promise<void> {
-  if (this.isModified('password')) {
-    this.password = await bcrypt.hash(this.password, 8);
-  }
-
-  next();
-}
-
-userSchema.pre<UserDocument>('save', hashPass);
+const User = mongoose.model<UserDocument, UserModel>('User', userSchema);
 
 export default User;
