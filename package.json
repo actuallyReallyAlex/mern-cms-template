@@ -7,9 +7,13 @@
     "build": "npm run build-client && npm run build-server",
     "build-client": "rimraf dist && webpack",
     "build-server": "rimraf build && tsc",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
     "dev": "webpack-dev-server",
     "start": "node build/index.js",
-    "start:dev": "env-cmd -e development npm start"
+    "start:dev": "env-cmd -e development npm start",
+    "test": "start-server-and-test test-server http://localhost:3000 cy:run",
+    "test-server": "env-cmd -e test npm start"
   },
   "repository": {
     "type": "git",
@@ -37,10 +41,12 @@
     "@types/react-dom": "^16.9.7",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.5.3",
+    "cypress": "^4.4.1",
     "env-cmd": "^10.1.0",
     "html-webpack-plugin": "^4.2.0",
     "rimraf": "^3.0.2",
     "source-map-loader": "^0.2.4",
+    "start-server-and-test": "^1.11.0",
     "style-loader": "^1.2.0",
     "ts-loader": "^7.0.1",
     "typescript": "^3.8.3",
